@@ -15,7 +15,7 @@ class GUI:
         tk.Label(master, text="Polynomial2 in binary").grid(row=1, column=1, ipadx=200)
         tk.Label(master, text="Polynomial1 in HEX").grid(row=2, column=1, ipadx=200)
         tk.Label(master, text="Polynomial2 in HEX").grid(row=3, column=1, ipadx=200)
-        tk.Label(master, text="GF(2^m); m=").grid(row=4, column=1, ipadx=200)
+        tk.Label(master, text="m(2^m); m=").grid(row=4, column=1, ipadx=200)
         tk.Label(master, text="", ).grid(row=5, column=1, ipadx=200)
         tk.Label(master, text="Results", bg="yellow").grid(row=6, column=1, ipadx=200)
         tk.Label(master, text="Decimal:").grid(row=7, column=1, ipadx=200)
@@ -78,8 +78,8 @@ class GUI:
         # menubinAr.add_cascade(label="File", menu=filemenu)
 
         helpmenu = tk.Menu(menubinAr, tearoff=0)
-        helpmenu.add_command(label="More info", command=lambda: self.popupmsg("Polynomial Calculator", "More info"))
-        helpmenu.add_command(label="About", command=lambda: self.popupmsg(
+        helpmenu.add_command(label="More info", command=lambda: self.popupMessage("Polynomial Calculator", "More info"))
+        helpmenu.add_command(label="About", command=lambda: self.popupMessage(
             "Developed by Peter Farah, Anthony Saab, and Karim Ghaddar for EECE455 Project#3", "About", "600x80"))
         menubinAr.add_cascade(label="Help", menu=helpmenu)
 
@@ -87,21 +87,30 @@ class GUI:
 
         master.mainloop()
 
-    def popupmsg(self, msg, tit="Warning!", size="400x100"):
+    def popupMessage(self, message, tit="Warning!", size="400x100"):
         """
-        Display an error message for the user
+        Display a custom error message for the user
         """
         popup = tk.Tk()
         popup.geometry(size)
         popup.wm_title(tit)
-        label = tk.Label(popup, text=msg, font="NORM_FONT")
+        label = tk.Label(popup, text=message, font="NORM_FONT")
         label.pack(side="top", fill="x", pady=10)
         B1 = tk.Button(popup, text="OK", command=popup.destroy)
         B1.pack()
         popup.mainloop()
 
-    def checkInput(self, mode, binA, binB, hexA, hexB, GF):
-        lenBinA, lenBinB, lenHexA, lenHexB, lenGF = len(binA), len(binB), len(hexA), len(hexB), len(GF)
+    def checkInput(self, mode, binA, binB, hexA, hexB, m):
+        """
+        Checks user input for unacceptable input forms
+        :param mode: int representing the operation requested by user
+        :param binA: str value of binary field #1
+        :param binB: str value of binary field #2
+        :param hexA: str value of hex field #1
+        :param hexB: str value of hex field #2
+        :param m: int for the m(2^m)
+        """
+        lenBinA, lenBinB, lenHexA, lenHexB, lenM = len(binA), len(binB), len(hexA), len(hexB), len(m)
         filledFields = []
         if binA:
             filledFields.append([2, binA])
@@ -111,28 +120,26 @@ class GUI:
             filledFields.append([16, hexA])
         if hexB:
             filledFields.append([16, hexB])
-        if (mode == 4 or mode == 5) and len(filledFields) != 1:
-            self.popupmsg("For this operation, provide only 1 polynomial")
-        elif len(filledFields) != 2:
-            self.popupmsg("For this operation, provide 2 polynomials")
-        elif lenGF == 0:
-            self.popupmsg("Please specify 'm' for the 2^m Galois Field")
-        elif not GF.isnumeric():
-            self.popupmsg("Galois only takes integer")
+        if mode <= 3 and len(filledFields) != 2:
+            self.popupMessage("For this operation, provide only 1 polynomial")
+        elif mode >= 4 and len(filledFields) != 1:
+            self.popupMessage("For this operation, provide 2 polynomials")
+        elif lenM == 0:
+            self.popupMessage("Please specify 'm' for the 2^m Galois Field")
+        elif not m.isnumeric():
+            self.popupMessage("Galois only takes integer")
         elif lenBinA != 0 and not tools.isBin(binA):
-            self.popupmsg("Bin1 invalid input")
+            self.popupMessage("Bin1 invalid input")
         elif lenBinB != 0 and not tools.isBin(binB):
-            self.popupmsg("Bin2 invalid input")
+            self.popupMessage("Bin2 invalid input")
         elif lenHexA != 0 and not tools.isHex(hexA):
-            self.popupmsg("Hex1 invalid input")
+            self.popupMessage("Hex1 invalid input")
         elif lenHexB != 0 and not tools.isHex(hexB):
-            self.popupmsg("Hex2 invalid input")
-        elif not self.myConnector.checkIfSupported(int(GF)):
-            self.popupmsg("2^" + str(GF) + " not supported")
+            self.popupMessage("Hex2 invalid input")
+        elif not self.myConnector.checkIfSupported(int(m)):
+            self.popupMessage("2^" + str(m) + " not supported")
         else:
-            print(filledFields)
-            print(232213)
-            self.myConnector.calculate(mode, filledFields, int(GF))
+            self.myConnector.calculate(mode, filledFields, int(m))
 
     def updateResult(self, resultInDec, irreducibleSt, r=0):
         stDec = str(resultInDec)

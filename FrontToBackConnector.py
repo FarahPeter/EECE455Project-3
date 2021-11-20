@@ -20,13 +20,26 @@ class FrontToBackConnector:
             return False
 
     def treatEntry(self, entry):
-        entry[1] = list(entry[1])
+        """
+        Takes an input from user in string form, could be bin or hex,
+        converts it to binary list
+        :param entry:
+        :return: List of 0 and 1 coefficients, representing the equivalent polynomial inputted
+        """
         if entry[0] == 16:
             entry[1] = tools.hexToBin(entry[1])
+        else:
+            entry[1] = list(entry[1])
         entry[1] = tools.charListToIntList(entry[1])
         return entry[1]
 
     def calculate(self, mode, filledFields, m):
+        """
+        Relays user input to backend in a suitable format
+        :param mode: int representing the operation requested by user
+        :param filledFields: list of tuples, each of which describes an input field value and base
+        :param m: int for the m(2^m)
+        """
         treatedEntries = []
         for i in range(len(filledFields)):
             treatedEntries.append(self.treatEntry(filledFields[i]))
@@ -47,7 +60,7 @@ class FrontToBackConnector:
             self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)
         elif mode == 4:
             result = polynomials[0].findInverse()
-            self.myGUI.updateResult(tools.binListToDec(result.coeffs), irreducibleSt)
+            self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)
         elif mode == 5:
             result = polynomials[0]
-            self.myGUI.updateResult(tools.binListToDec(result.coeffs), irreducibleSt)
+            self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)

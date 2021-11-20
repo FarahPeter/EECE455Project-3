@@ -17,7 +17,6 @@ class IrreduciblePreloader:
             nameHandle.write("{")
             for m in range(2, 40):
                 newEntry = galois.irreducible_poly(2, m).coeffs.tolist()
-                galois.irreducible_poly().__str__()
                 self.dict[m] = newEntry
                 nameHandle.write('"' + str(m) + '":"' + str(newEntry) + '",')
             nameHandle.write('"-1":"0"')
