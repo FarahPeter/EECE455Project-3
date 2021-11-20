@@ -15,7 +15,7 @@ class GUI:
         tk.Label(master, text="Polynomial2 in binary").grid(row=1, column=1, ipadx=200)
         tk.Label(master, text="Polynomial1 in HEX").grid(row=2, column=1, ipadx=200)
         tk.Label(master, text="Polynomial2 in HEX").grid(row=3, column=1, ipadx=200)
-        tk.Label(master, text="m(2^m); m=").grid(row=4, column=1, ipadx=200)
+        tk.Label(master, text="GF(2^m); m=").grid(row=4, column=1, ipadx=200)
         tk.Label(master, text="", ).grid(row=5, column=1, ipadx=200)
         tk.Label(master, text="Results", bg="yellow").grid(row=6, column=1, ipadx=200)
         tk.Label(master, text="Decimal:").grid(row=7, column=1, ipadx=200)
@@ -137,7 +137,7 @@ class GUI:
         elif lenHexB != 0 and not tools.isHex(hexB):
             self.popupMessage("Hex2 invalid input")
         elif not self.myConnector.checkIfSupported(int(m)):
-            self.popupMessage("2^" + str(m) + " not supported")
+            self.popupMessage("GF(2^" + str(m) + ") not supported")
         else:
             self.myConnector.calculate(mode, filledFields, int(m))
 
