@@ -51,7 +51,9 @@ class PolyGalois2m:
             a2 = b2
             b2 = oldA2 - quotients[i] * a2
         b2 = self.coeffsMod2(b2)
-        return b2
+        temp = PolyGalois2m([0], self.m, self.irreducible)
+        temp.numPoly = b2
+        return temp
 
     def __add__(self, other):
         temp = PolyGalois2m(self.numPoly + other.numPoly, self.m, self.irreducible)
@@ -69,28 +71,39 @@ class PolyGalois2m:
         return temp
 
     def __floordiv__(self, other):
-        (quotient, remainder) = self.numPoly / other.numPoly
-        temp = PolyGalois2m(quotient, self.m, self.irreducible)
-        temp.polyModIrreducible()
-        return temp
+        return self.__truediv__(self, other)
 
     def __str__(self):
         return str(self.numPoly)
 
     def __mod__(self, other):
-        print(self, other)
-        print("\n", self.irreducible)
         (quotient, remainder) = self.numPoly / other.numPoly
         temp = PolyGalois2m(remainder, self.m, self.irreducible)
         temp.polyModIrreducible()
         return temp
+
+    def __truediv__(self, other):
+        otherzInverse = other.findInverse()
+        return self * otherzInverse
 
     def polyModIrreducible(self):
         (quotient, remainder) = self.numPoly / self.irreducible
         self.numPoly = remainder
         self.numPoly = self.coeffsMod2(self.numPoly)
 
+    def __eq__(self, other):
+        if self.numPoly != other.numPoly:
+            return False
+        elif self.m != other.m:
+            return False
+        return True
+
     def coeffsMod2(self, toMod):
+        """
+        Takes the coeffs of the toMod and submits them to mod 2
+        :param toMod: np.poly1d
+        :return: poly1d with all the coeffs mod 2
+        """
         newCoeffs = [0] * len(toMod.coeffs)
         for i in range(len(toMod.coeffs)):
             if toMod.coeffs[i] % 2:
