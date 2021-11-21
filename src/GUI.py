@@ -157,12 +157,12 @@ class GUI:
         else:
             self.FlabelD['text'] = "Too large to display properly"
 
-        finalsb = str(bin(resultInDec))
-        finalsh = str(hex(resultInDec))
-        if (len(finalsb) < 65):
-            self.FlabelB['text'] = (finalsb)
+        finalsb = str(bin(int(resultInDec)))
+        finalsh = str(hex(int(resultInDec)))
+        if len(finalsb) < 65:
+            self.FlabelB['text'] = finalsb
         else:
             self.FlabelB['text'] = "Too large to display properly"
 
-        self.FlabelH['text'] = (finalsh)
+        self.FlabelH['text'] = finalsh
         self.la['text'] = irreducibleSt

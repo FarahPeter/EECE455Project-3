@@ -18,6 +18,11 @@ class FrontToBackConnector:
         self.myPreloader = IrreduciblePreloader()
 
     def checkIfSupported(self, m):
+        """
+        Checks if the m provided corresponds to a supported GF(2^m)
+        :param m: int
+        :return: bool accordingly
+        """
         if m in self.myPreloader.dict:
             return True, self.myPreloader.dict[m]
         else:
