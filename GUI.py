@@ -6,6 +6,10 @@ class GUI:
     myConnector = None
 
     def __init__(self, gui):
+        """
+        Instantiates the main GUI, and returns the self to Launcher for linking to backend
+        :param gui: Empty list used to return self
+        """
         gui.append(self)
         master = tk.Tk()
         master.wm_title("Galois Polynomials Calculator")
@@ -141,7 +145,12 @@ class GUI:
         else:
             self.myConnector.calculate(mode, filledFields, int(m))
 
-    def updateResult(self, resultInDec, irreducibleSt, r=0):
+    def updateResult(self, resultInDec, irreducibleSt):
+        """
+        Called by the backend to show the results on the GUI
+        :param resultInDec: Resulting polynomial in decimal representation
+        :param irreducibleSt: str of the irreducible polynomial used for the successful oepration
+        """
         stDec = str(resultInDec)
         if len(stDec) < 65:
             self.FlabelD['text'] = stDec

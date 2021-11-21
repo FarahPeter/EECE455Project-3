@@ -29,6 +29,12 @@ class PolyGalois2m:
         self.m = m
 
     def findQuotients(self, dividend, divisor):
+        """
+        Runs extended Euclid and stores the quotients in order
+        :param dividend:
+        :param divisor:
+        :return: list of quotients
+        """
         quotients = []
         while True:
             (quotient, remainder) = dividend / divisor
@@ -87,6 +93,10 @@ class PolyGalois2m:
         return self * otherzInverse
 
     def polyModIrreducible(self):
+        """
+        Submits the numPoly to a mod m(x) operation
+        :return:
+        """
         (quotient, remainder) = self.numPoly / self.irreducible
         self.numPoly = remainder
         self.numPoly = self.coeffsMod2(self.numPoly)

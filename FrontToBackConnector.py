@@ -10,6 +10,10 @@ class FrontToBackConnector:
     myGUI = None
 
     def __init__(self, connector):
+        """
+        Instantiates preloader and sends the self to the Launcher, so a link can be established.
+        :param connector: Empty list used to return the self
+        """
         connector.append(self)
         self.myPreloader = IrreduciblePreloader()
 
