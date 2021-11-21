@@ -17,12 +17,12 @@ class IrreduciblePreloader:
             if getattr(sys, 'frozen', False):
                 nameHandle = open(os.path.join(sys._MEIPASS, "Preloaded_Irreducibles.json"), "r")
             else:
-                nameHandle = open("Preloaded_Irreducibles.json", "r")
+                nameHandle = open("resources/Preloaded_Irreducibles.json", "r")
             tempDict = json.loads(nameHandle.read())
             for key in tempDict:
                 self.dict[int(key)] = json.loads(tempDict[key])
         except FileNotFoundError:
-            nameHandle = open("Preloaded_Irreducibles.json", "w")
+            nameHandle = open("resources/Preloaded_Irreducibles.json", "w")
             nameHandle.write("{")
             for m in range(2, 201):
                 newEntry = galois.irreducible_poly(2, m).coeffs.tolist()

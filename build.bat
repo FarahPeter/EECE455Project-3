@@ -1,2 +1,2 @@
-pyinstaller --noconsole --onefile --add-data "Preloaded_Irreducibles.json;." --icon=galois.ico .\Launcher.py
+pyinstaller --noconsole --onefile --add-data "resources/Preloaded_Irreducibles.json;." --icon=resources/galois.ico .\src\Launcher.py
 PAUSE
