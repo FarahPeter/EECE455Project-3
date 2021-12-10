@@ -176,7 +176,7 @@ class GUI:
             self.popupMessage("GF(2^" + str(m) + ") not supported")
         elif mode == 3 and not int(filledFields[1][1]):
             self.popupMessage("Cannot divide by 0")
-        elif mode == 4 and not int(filledFields[0][1]):
+        elif mode == 4 and tools.allZeroes(filledFields[0][1]):
             self.popupMessage("Cannot invert by 0")
         else:
             self.myConnector.calculate(mode, filledFields, int(m))

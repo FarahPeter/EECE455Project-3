@@ -73,3 +73,9 @@ def stringifyBinList(lista):
 def addToClipBoard(root, text):
     root.clipboard_clear()
     root.clipboard_append(text)
+
+def allZeroes(st):
+    for char in st:
+        if char != "0":
+            return False
+    return True
