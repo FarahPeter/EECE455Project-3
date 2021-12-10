@@ -1,3 +1,6 @@
+import os
+
+
 def isBin(st):
     """
     Checks if st is a valid binary number in a string format
@@ -28,7 +31,7 @@ def binListToDec(lista):
     dec = 0
     for i in range(len(lista)):
         degree = len(lista) - i - 1
-        dec = dec + lista[i] * 2 ** degree
+        dec = dec + int(lista[i]) * 2 ** degree
     return dec
 
 
@@ -68,3 +71,8 @@ def stringifyBinList(lista):
             degree = len(lista) - i - 1
             st += "x^" + str(degree) + " + "
     return st[:-2]
+
+
+def addToClipBoard(text):
+    command = 'echo ' + text.strip() + '| clip'
+    os.system(command)

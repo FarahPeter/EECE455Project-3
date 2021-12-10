@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter import RIGHT, Y, END
+
 import tools
 
 
@@ -37,7 +39,8 @@ class GUI:
 
         self.la = tk.Label(master, text="", fg="black", pady=10, padx=10, font=10)
         self.la.grid(row=10, column=2, ipadx=0)
-        self.irreducibleLabel = tk.Label(master, text="Irreducible Polynomial:", fg="black").grid(row=10, column=1, ipadx=0)
+        tk.Label(master, text="Irreducible Polynomial:", fg="black").grid(row=10, column=1,
+                                                                          ipadx=0)
 
         addi = tk.Button(master, text="Add", padx=30, pady=5, fg="black", bg="#263D42",
                          command=lambda: self.checkInput(0, polBin1.get(), polBin2.get(), polHex1.get(), polHex2.get(),
@@ -69,12 +72,32 @@ class GUI:
                                                          gf.get()))
         redu.grid(row=5, column=0)
 
-        self.FlabelD = tk.Label(master, text="", fg="black", pady=10, padx=10, font=10)
+        self.FlabelD = tk.Text(master, state='disabled', bg='grey', fg="white", height=5, width=52)
         self.FlabelD.grid(row=7, column=2)
-        self.FlabelB = tk.Label(master, text="", fg="black", pady=10, padx=10, font=10)
+        self.scrollerD = tk.Scrollbar(master, command=self.FlabelD.yview)
+        self.scrollerD.grid(row=7, column=3, sticky='nsew')
+        self.FlabelD['yscrollcommand'] = self.scrollerD.set
+        copyDec = tk.Button(master, text="Copy Dec Value", padx=30, pady=5,
+                         command=lambda: tools.addToClipBoard(self.FlabelD.get('1.0', END)))
+        copyDec.grid(row=7, column=4)
+
+        self.FlabelB = tk.Text(master, state='disabled', bg='grey', fg="white", height=5, width=52)
         self.FlabelB.grid(row=8, column=2)
-        self.FlabelH = tk.Label(master, text="", fg="black", pady=10, padx=10, font=10)
+        self.scrollerB = tk.Scrollbar(master, command=self.FlabelB.yview)
+        self.scrollerB.grid(row=8, column=3, sticky='nsew')
+        self.FlabelB['yscrollcommand'] = self.scrollerB.set
+        copyBin = tk.Button(master, text="Copy Bin Value", padx=30, pady=5,
+                            command=lambda: tools.addToClipBoard(self.FlabelB.get('1.0', END)))
+        copyBin.grid(row=8, column=4)
+
+        self.FlabelH = tk.Text(master, state='disabled', bg='grey', fg="white", height=5, width=52)
         self.FlabelH.grid(row=9, column=2)
+        self.scrollerH = tk.Scrollbar(master, command=self.FlabelH.yview)
+        self.scrollerH.grid(row=9, column=3, sticky='nsew')
+        self.FlabelH['yscrollcommand'] = self.scrollerH.set
+        copyHex = tk.Button(master, text="Copy Hex Value", padx=30, pady=5,
+                            command=lambda: tools.addToClipBoard(self.FlabelH.get('1.0', END)))
+        copyHex.grid(row=9, column=4)
 
         menubinAr = tk.Menu(master)
         filemenu = tk.Menu(menubinAr, tearoff=0)
@@ -88,7 +111,8 @@ class GUI:
         menubinAr.add_cascade(label="Help", menu=helpmenu)
 
         master.config(menu=menubinAr)
-
+        w, h = master.winfo_screenwidth(), master.winfo_screenheight()
+        master.geometry("%dx%d+0+0" % (w, h))
         master.mainloop()
 
     def popupMessage(self, message, tit="Warning!", size="400x100"):
@@ -114,6 +138,15 @@ class GUI:
         :param hexB: str value of hex field #2
         :param m: int for the m(2^m)
         """
+        binA, binB, hexA, hexB, m = binA.strip(), binB.strip(), hexA.strip(), hexB.strip(), m.strip()
+        if binA[:2] == "0b":
+            binA = binA[2:]
+        if binB[:2] == "0b":
+            binB = binB[2:]
+        if hexA[:2] == "0x":
+            hexA = hexA[2:]
+        if hexB[:2] == "0x":
+            hexB = hexB[2:]
         lenBinA, lenBinB, lenHexA, lenHexB, lenM = len(binA), len(binB), len(hexA), len(hexB), len(m)
         filledFields = []
         if binA:
@@ -124,12 +157,12 @@ class GUI:
             filledFields.append([16, hexA])
         if hexB:
             filledFields.append([16, hexB])
-        if mode <= 3 and len(filledFields) != 2:
-            self.popupMessage("For this operation, provide only 1 polynomial")
-        elif mode >= 4 and len(filledFields) != 1:
-            self.popupMessage("For this operation, provide 2 polynomials")
-        elif lenM == 0:
+        if lenM == 0:
             self.popupMessage("Please specify 'm' for the 2^m Galois Field")
+        elif mode <= 3 and len(filledFields) != 2:
+            self.popupMessage("For this operation, provide only 2 polynomials")
+        elif mode >= 4 and len(filledFields) != 1:
+            self.popupMessage("For this operation, provide only 1 polynomial")
         elif not m.isnumeric():
             self.popupMessage("Galois only takes integer")
         elif lenBinA != 0 and not tools.isBin(binA):
@@ -152,17 +185,20 @@ class GUI:
         :param irreducibleSt: str of the irreducible polynomial used for the successful oepration
         """
         stDec = str(resultInDec)
-        if len(stDec) < 65:
-            self.FlabelD['text'] = stDec
-        else:
-            self.FlabelD['text'] = "Too large to display properly"
+        self.FlabelD['state'] = 'normal'
+        self.FlabelD.delete('1.0', END)
+        self.FlabelD.insert("1.0", stDec)
+        self.FlabelD['state'] = 'disabled'
 
         finalsb = str(bin(int(resultInDec)))
         finalsh = str(hex(int(resultInDec)))
-        if len(finalsb) < 65:
-            self.FlabelB['text'] = finalsb
-        else:
-            self.FlabelB['text'] = "Too large to display properly"
+        self.FlabelB['state'] = 'normal'
+        self.FlabelB.delete('1.0', END)
+        self.FlabelB.insert("1.0", finalsb)
+        self.FlabelB['state'] = 'disabled'
 
-        self.FlabelH['text'] = finalsh
+        self.FlabelH['state'] = 'normal'
+        self.FlabelH.delete('1.0', END)
+        self.FlabelH.insert("1.0", finalsh)
+        self.FlabelH['state'] = 'disabled'
         self.la['text'] = irreducibleSt
