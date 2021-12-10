@@ -1,5 +1,4 @@
 import numpy as np
-import galois
 
 
 class PolyGalois2m:

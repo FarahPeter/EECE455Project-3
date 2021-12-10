@@ -1,5 +1,3 @@
-from numpy import poly1d
-
 import tools
 from IrreduciblePreloader import IrreduciblePreloader
 from PolyGalois2m import PolyGalois2m
@@ -55,21 +53,28 @@ class FrontToBackConnector:
         irreducibleCoeffs = self.myPreloader.dict[m]
         polynomials = [PolyGalois2m(coeffs, m, irreducibleCoeffs) for coeffs in treatedEntries]
         irreducibleSt = tools.stringifyBinList(irreducibleCoeffs)
+
+        # Adding two polynomials
         if mode == 0:
             result = polynomials[0] + polynomials[1]
             self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)
+        # Substracting two polynomials
         elif mode == 1:
             result = polynomials[0] - polynomials[1]
             self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)
+        # Multiplying two polynomials
         elif mode == 2:
             result = polynomials[0] * polynomials[1]
             self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)
+        # Dividing two polynomials
         elif mode == 3:
             result = polynomials[0] / polynomials[1]
             self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)
+        # Inverting a polynomial
         elif mode == 4:
             result = polynomials[0].findInverse()
             self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)
+        # Moduloing a polynomial
         elif mode == 5:
             result = polynomials[0]
             self.myGUI.updateResult(tools.binListToDec(result.numPoly.coeffs), irreducibleSt)

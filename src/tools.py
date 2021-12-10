@@ -1,6 +1,3 @@
-import os
-
-
 def isBin(st):
     """
     Checks if st is a valid binary number in a string format
@@ -73,6 +70,6 @@ def stringifyBinList(lista):
     return st[:-2]
 
 
-def addToClipBoard(text):
-    command = 'echo ' + text.strip() + '| clip'
-    os.system(command)
+def addToClipBoard(root, text):
+    root.clipboard_clear()
+    root.clipboard_append(text)
