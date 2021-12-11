@@ -6,8 +6,11 @@ To build the executable:
 
 
    a- Python
+   
    b- pip (to install the dependencies in requirements.txt)
+   
    c- pipenv (to run pip inside a virtual environment)
+   
 
 Download this repository as a ZIP file, and extract it inside the virtual environment.
 Finally, and also inside the virtual environment, run build.bat .
