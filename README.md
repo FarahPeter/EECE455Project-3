@@ -3,6 +3,8 @@
 To build the executable:
 1) Your machine must be a Windows 10 machine
 2) It should be equipped with:
+
+
    a- Python
    b- pip (to install the dependencies in requirements.txt)
    c- pipenv (to run pip inside a virtual environment)
