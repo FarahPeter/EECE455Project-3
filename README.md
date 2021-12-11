@@ -13,5 +13,5 @@ To build the executable:
    
 
 Download this repository as a ZIP file, and extract it inside the virtual environment.
-Finally, and also inside the virtual environment, run build.bat .
+Finally, and also inside the virtual environment, run build.bat.
 When the execution is done, you can find the exe in the dist folder!
